@@ -64,4 +64,4 @@ jobs:
         with:
           app-name: 'lvnt-wapp'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_02D22DD2B2924D20804B7D65BC286F37 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E07FEC8F06F2495EA2561D8FE0679F60 }}
