@@ -1,0 +1,42 @@
+name: Trigger auto deployment for cntrapp
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/cntrapp-AutoDeployTrigger-84ef5531-72e9-4bc9-9661-2738b54a6d57.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.CNTRAPP_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: regcnt.azurecr.io
+          registryUsername: ${{ secrets.CNTRAPP_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.CNTRAPP_REGISTRY_PASSWORD }}
+          containerAppName: cntrapp
+          resourceGroup: RG1-EastUS
+          imageToBuild: regcnt.azurecr.io/hello-world:${{ github.sha }}
+          
+
+     
+
